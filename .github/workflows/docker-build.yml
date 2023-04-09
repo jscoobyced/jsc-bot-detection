@@ -20,5 +20,7 @@ jobs:
       - name: Run Codecov
         uses: codecov/codecov-action@v3
         with:
-          files: build/reports/kover/report.xml
+          directory: build/reports/kover
+          files: report.xml
           fail_ci_if_error: true
+          gcov_ignore: ""
