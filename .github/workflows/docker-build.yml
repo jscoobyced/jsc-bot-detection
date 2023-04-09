@@ -1,0 +1,113 @@
+name: Build Docker image
+
+on:
+  push:
+    branches:
+      - 'main'
+  release:
+    types: [ published ]
+
+env:
+  FIFTY_ONE_DEGREES_HASH_FILE_SRC: https://github.com/51Degrees/device-detection-data/raw/main/51Degrees-LiteV4.1.hash
+  FIFTY_ONE_DEGREES_HASH_FILE_DEST: ./src/main/resources/51Degrees-LiteV4.1.hash
+
+jobs:
+  test:
+    name: Run tests and upload coverage to Codecov
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Fetch 51degrees hash file
+        run: wget "$FIFTY_ONE_DEGREES_HASH_FILE_SRC" -O "$FIFTY_ONE_DEGREES_HASH_FILE_DEST"
+
+      - name: Run Tests
+        run: ./gradlew koverXmlReport
+
+      - name: Run Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          directory: build/reports/kover
+          files: report.xml
+          fail_ci_if_error: true
+
+  analyze:
+    name: Run SonarCloud analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Fetch 51degrees hash file
+        run: wget "$FIFTY_ONE_DEGREES_HASH_FILE_SRC" -O "$FIFTY_ONE_DEGREES_HASH_FILE_DEST"
+
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+
+      - name: Build and analyze
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./etc/bin/sonar.sh
+
+  build_push:
+    needs:
+      - test
+      - analyze
+    if: github.event_name == 'release' && github.event.action == 'published'
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ secrets.DOCKER_USERNAME }}/jsc-bot-detection
+          tags: |
+            type=semver,pattern={{version}}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./etc/docker/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: |
+            ${{ steps.meta.outputs.labels }}
+            org.opencontainers.image.description=This project aims at providing a base bot detection and classification in order to help protect your environments.
