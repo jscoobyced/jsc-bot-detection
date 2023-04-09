@@ -6,6 +6,7 @@ plugins {
     kotlin("jvm") version "1.8.20"
     id("io.ktor.plugin") version "2.2.4"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.20"
+    id("org.jetbrains.kotlinx.kover") version "0.7.0-Alpha"
 
 }
 
@@ -33,8 +34,43 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktorVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
+    testImplementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+
 }
 
 kotlin {
     jvmToolchain(11)
+}
+
+kover {
+    disabledForProject = false
+    useKoverTool()
+}
+
+koverReport {
+    html {
+        // custom header in HTML reports, project path by default
+        title = "JSC BOT Detection Service"
+        onCheck = false
+
+        filters {
+            excludes {
+            }
+        }
+    }
+    verify {
+        onCheck = true
+        rule {
+            filters {
+                excludes {
+                }
+            }
+            bound {
+                minValue = 88
+                maxValue = 100
+                metric = kotlinx.kover.gradle.plugin.dsl.MetricType.LINE
+                aggregation = kotlinx.kover.gradle.plugin.dsl.AggregationType.COVERED_PERCENTAGE
+            }
+        }
+    }
 }

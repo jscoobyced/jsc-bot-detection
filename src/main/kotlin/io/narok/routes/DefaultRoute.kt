@@ -9,5 +9,8 @@ fun Application.defaultRouting() {
         get("/") {
             call.respond("")
         }
+        post("/") {
+            call.respond("")
+        }
     }
 }
