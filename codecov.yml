@@ -1,6 +1,6 @@
 coverage:
   precision: 2
   round: down
-  range: "80...90"
+  range: "85...90"
 ignore:
   - "src/main/kotlin/io/narok/Application.kt"
