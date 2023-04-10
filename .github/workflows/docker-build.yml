@@ -29,7 +29,7 @@ jobs:
 
   build_push:
     needs: test
-    if: github.event_name == 'release' && github.event.action == 'created'
+    if: github.event_name == 'release' && github.event.action == 'published'
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     steps:
