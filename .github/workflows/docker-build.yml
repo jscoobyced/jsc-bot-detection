@@ -46,7 +46,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: jscdroiddev/jsc-bot-detection
+          images: dotflat/jsc-bot-detection
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
