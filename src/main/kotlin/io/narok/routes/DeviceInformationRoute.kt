@@ -1,6 +1,7 @@
 package io.narok.routes
 
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -17,19 +18,21 @@ object DeviceInformationRouteConfig {
 
 fun Application.deviceInformationRouting() {
     routing {
-        post(DeviceInformationRouteConfig.path) {
-            val deviceInformation = call.receive<DeviceInformation>()
-            deviceInformationStorage.add(deviceInformation)
-            val deviceInformationWithSignature = DeviceInformation(
-                deviceInformation.url,
-                deviceInformation.userAgent,
-                deviceInformation.whiteListedCookies,
-                deviceInformation.ipAddress,
-                deviceInformation.sessionId,
-                DeviceSignature("9876543210", 1),
-                DeviceType(isBot = true, isHuman = false, isKnownBot = true, isBadBot = true)
-            )
-            call.respond(deviceInformationWithSignature)
+        authenticate("auth-jwt") {
+            post(DeviceInformationRouteConfig.path) {
+                val deviceInformation = call.receive<DeviceInformation>()
+                deviceInformationStorage.add(deviceInformation)
+                val deviceInformationWithSignature = DeviceInformation(
+                    deviceInformation.url,
+                    deviceInformation.userAgent,
+                    deviceInformation.whiteListedCookies,
+                    deviceInformation.ipAddress,
+                    deviceInformation.sessionId,
+                    DeviceSignature("9876543210", 1),
+                    DeviceType(isBot = true, isHuman = false, isKnownBot = true, isBadBot = true)
+                )
+                call.respond(deviceInformationWithSignature)
+            }
         }
     }
 }
