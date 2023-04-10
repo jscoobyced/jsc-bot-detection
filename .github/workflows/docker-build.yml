@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - 'main'
+    tags:
+      - v*
 
 jobs:
   test:
@@ -58,4 +60,6 @@ jobs:
           file: ./etc/docker/Dockerfile
           push: ${{ github.event_name == 'push tag' }}
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          labels: |
+            ${{ steps.meta.outputs.labels }}
+            org.opencontainers.image.description="This project aims at providing a base bot detection and classification in order to help protect your environments."
