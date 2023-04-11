@@ -39,10 +39,6 @@ dependencies {
     testImplementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
 }
 
-kotlin {
-    jvmToolchain(11)
-}
-
 kover {
     disabledForProject = false
     useKoverTool()
