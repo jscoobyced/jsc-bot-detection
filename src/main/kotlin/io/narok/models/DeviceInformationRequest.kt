@@ -35,6 +35,3 @@ class DeviceInformationRequestBuilder(private val url: String, private val userA
         return DeviceInformationRequest(url, userAgent, whiteListedCookies, ipAddress, sessionId)
     }
 }
-
-
-val deviceInformationStorage = mutableListOf<DeviceInformationRequest>()

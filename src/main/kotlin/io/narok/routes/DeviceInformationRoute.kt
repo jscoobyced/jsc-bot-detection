@@ -7,8 +7,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.narok.models.DeviceInformation
 import io.narok.models.DeviceInformationRequest
-import io.narok.models.deviceInformationStorage
 import io.narok.plugins.RoutingConfig
+import io.sentry.Sentry
 
 object DeviceInformationRouteConfig {
     private const val route: String = "deviceInformation"
@@ -19,10 +19,17 @@ fun Application.deviceInformationRouting() {
     routing {
         authenticate("auth-jwt") {
             post(DeviceInformationRouteConfig.path) {
-                val deviceInformationRequest = call.receive<DeviceInformationRequest>()
-                deviceInformationStorage.add(deviceInformationRequest)
-                val deviceInformation = DeviceInformation.fromDeviceInformationRequest(deviceInformationRequest)
-                call.respond(deviceInformation)
+                val transaction = Sentry.startTransaction(DeviceInformationRouteConfig.path,"post")
+                try {
+                    val deviceInformationRequest = call.receive<DeviceInformationRequest>()
+                    val deviceInformation = DeviceInformation.fromDeviceInformationRequest(deviceInformationRequest)
+                    call.respond(deviceInformation)
+                } catch (exception: ContentTransformationException) {
+                    Sentry.captureException(exception)
+                    throw exception
+                } finally {
+                    transaction.finish()
+                }
             }
         }
     }
