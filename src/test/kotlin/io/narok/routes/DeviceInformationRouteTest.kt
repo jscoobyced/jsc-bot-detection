@@ -7,6 +7,8 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.testing.*
 import io.narok.models.DeviceInformation
+import io.narok.models.DeviceInformationRequest
+import io.narok.models.DeviceInformationRequestBuilder
 import io.narok.withToken
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -25,17 +27,15 @@ class DeviceInformationRouteTest {
 
             val cookies = HashMap<String, String>()
             cookies["user-token"] = "123456789"
-            val deviceInformation = DeviceInformation(
-                "https://localhost", "User Agent", sessionId = "whatever", whiteListedCookies = cookies
-            )
+            val deviceInformationRequest =
+                DeviceInformationRequestBuilder("http://example.com", "User Agent 123").build()
             val response = httpClient.post(DeviceInformationRouteConfig.path) {
                 contentType(ContentType.Application.Json)
                 bearerAuth(token)
-                setBody<DeviceInformation>(deviceInformation)
+                setBody<DeviceInformationRequest>(deviceInformationRequest)
             }
-            val deviceInformationResponse = response.body<DeviceInformation>()
-            assertEquals(deviceInformation.url, deviceInformationResponse.url)
-            assertNotNull(deviceInformationResponse.deviceSignature)
+            val deviceInformation = response.body<DeviceInformation>()
+            assertNotNull(deviceInformation.domain)
             assertEquals(HttpStatusCode.OK, response.status)
         }
     }
