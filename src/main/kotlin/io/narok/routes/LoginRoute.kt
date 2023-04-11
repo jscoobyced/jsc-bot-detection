@@ -3,6 +3,7 @@ package io.narok.routes
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.server.application.*
+import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -31,7 +32,7 @@ fun Application.loginRouting() {
                     .withExpiresAt(Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * expiryInDays))
                     .sign(Algorithm.HMAC256(secret))
                 call.respond(hashMapOf("token" to token))
-            } catch (exception: ContentTransformationException) {
+            } catch (exception: BadRequestException) {
                 Sentry.captureException(exception)
                 throw exception
             } finally {
