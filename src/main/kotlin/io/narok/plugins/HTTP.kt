@@ -51,7 +51,7 @@ fun Application.configureHTTP() {
                     null
                 }
             }
-            challenge { defaultScheme, realm ->
+            challenge { _, _ ->
                 Sentry.captureMessage("Invalid token.")
                 call.respond(HttpStatusCode.Unauthorized, "Token is not valid or has expired")
             }

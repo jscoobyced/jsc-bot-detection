@@ -53,6 +53,7 @@ koverReport {
 
         filters {
             excludes {
+                classes("io.narok.plugins.SentryKt")
             }
         }
     }
@@ -61,6 +62,7 @@ koverReport {
         rule {
             filters {
                 excludes {
+                    classes("io.narok.plugins.SentryKt")
                 }
             }
             bound {
