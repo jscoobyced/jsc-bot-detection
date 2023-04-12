@@ -28,7 +28,7 @@ class DeviceInformationTest {
     @Test
     fun `can transform a simple deviceInformationRequest to a deviceInformation`() {
         val deviceInformationRequest = DeviceInformationRequestBuilder(
-            "https://example.com", "User Agent 123"
+            "http://example.com", "User Agent 123"
         ).build()
 
         val deviceInformation = DeviceInformation.fromDeviceInformationRequest(deviceInformationRequest)
@@ -40,6 +40,6 @@ class DeviceInformationTest {
         assertEquals("example.com", deviceInformation.domain)
         assertEquals("", deviceInformation.path)
         assertEquals(mapOf(), deviceInformation.parameters)
-        assertEquals(true, deviceInformation.isHttps)
+        assertEquals(false, deviceInformation.isHttps)
     }
 }

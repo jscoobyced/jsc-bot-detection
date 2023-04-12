@@ -56,4 +56,35 @@ class DeviceInformationRouteTest {
             assertEquals(HttpStatusCode.BadRequest, response.status)
         }
     }
+
+    @Test
+    fun `Post an invalid DeviceInformation`() = testApplication {
+        val httpClient = createClient {
+            install(ContentNegotiation) {
+                json()
+            }
+        }
+        withToken(httpClient) { token ->
+
+            val response = httpClient.post(DeviceInformationRouteConfig.path) {
+                contentType(ContentType.Application.Json)
+                bearerAuth(token)
+                setBody("bad format")
+            }
+            assertEquals(HttpStatusCode.BadRequest, response.status)
+        }
+    }
+
+    @Test
+    fun `Post a DeviceInformation unauthorized`() = testApplication {
+        val httpClient = createClient {
+            install(ContentNegotiation) {
+                json()
+            }
+        }
+        val response = httpClient.post(DeviceInformationRouteConfig.path) {
+            contentType(ContentType.Application.Json)
+        }
+        assertEquals(HttpStatusCode.Unauthorized, response.status)
+    }
 }

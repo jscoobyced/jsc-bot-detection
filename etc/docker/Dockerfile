@@ -1,6 +1,5 @@
 FROM gradle:8-alpine AS build
 
-RUN apk add openjdk11
 WORKDIR /home/gradle/src
 
 COPY src src

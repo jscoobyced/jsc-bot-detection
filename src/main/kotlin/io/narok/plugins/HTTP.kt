@@ -9,6 +9,7 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.plugins.compression.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.response.*
+import io.sentry.Sentry
 
 fun Application.configureHTTP() {
 
@@ -51,6 +52,7 @@ fun Application.configureHTTP() {
                 }
             }
             challenge { defaultScheme, realm ->
+                Sentry.captureMessage("Invalid token.")
                 call.respond(HttpStatusCode.Unauthorized, "Token is not valid or has expired")
             }
         }

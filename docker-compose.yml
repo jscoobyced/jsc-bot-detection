@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  api-dev:
+    build:
+      context: .
+      dockerfile: etc/docker/Dockerfile
+    ports:
+      - "8010:8010"
+    env_file:
+      - .env
+    networks:
+      - jscbot-dev
+
+networks:
+  jscbot-dev:
