@@ -16,9 +16,7 @@ version = "1.0-SNAPSHOT"
 
 application {
     mainClass.set("io.narok.ApplicationKt")
-
-    val isDevelopment: Boolean = project.ext.has("development")
-    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
+    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=true")
 }
 
 repositories {
