@@ -9,8 +9,10 @@ import io.ktor.server.routing.*
 import io.narok.models.DeviceInformation
 import io.narok.models.DeviceInformationRequest
 import io.narok.plugins.RoutingConfig
-import io.narok.services.DeviceSignatureService
+import io.narok.services.IDeviceSignatureService
 import io.sentry.Sentry
+import org.kodein.di.instance
+import org.kodein.di.ktor.closestDI
 
 object DeviceInformationRouteConfig {
     private const val route: String = "deviceInformation"
@@ -25,8 +27,8 @@ fun Application.deviceInformationRouting() {
                 try {
                     val deviceInformationRequest = call.receive<DeviceInformationRequest>()
                     val deviceInformation = DeviceInformation.fromDeviceInformationRequest(deviceInformationRequest)
-                    // TODO - Use DI to inject Service
-                    val deviceInformationWithSignature = DeviceSignatureService().createSignature(deviceInformation)
+                    val deviceSignatureService by call.closestDI().instance<IDeviceSignatureService>()
+                    val deviceInformationWithSignature = deviceSignatureService.createSignature(deviceInformation)
                     call.respond(deviceInformationWithSignature)
                 } catch (exception: BadRequestException) {
                     Sentry.captureException(exception)

@@ -8,8 +8,8 @@ class DeviceInformationTest {
     @Test
     fun `can transform a fully filled deviceInformationRequest to a deviceInformation`() {
         val deviceInformationRequest = DeviceInformationRequestBuilder(
-            "https://example.com/blog?param=1&key=2", "User Agent 123"
-        ).withIpAddress("192.168.1.10").withSessionId("123456789")
+            "https://example.com/blog?param=1&key=2", "User Agent 123", "192.168.1.10"
+        ).withSessionId("123456789")
             .withWhiteListedCookies(mapOf("cookie1" to "value1", "cookie2" to "value2"))
             .build()
 
@@ -28,7 +28,7 @@ class DeviceInformationTest {
     @Test
     fun `can transform a simple deviceInformationRequest to a deviceInformation`() {
         val deviceInformationRequest = DeviceInformationRequestBuilder(
-            "http://example.com", "User Agent 123"
+            "http://example.com", "User Agent 123", "192.168.1.10"
         ).build()
 
         val deviceInformation = DeviceInformation.fromDeviceInformationRequest(deviceInformationRequest)

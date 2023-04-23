@@ -11,18 +11,12 @@ data class DeviceInformationRequest(
     override val sessionId: String?
 ) : IDeviceInformation
 
-class DeviceInformationRequestBuilder(private val url: String, private val userAgent: String) {
+class DeviceInformationRequestBuilder(private val url: String, private val userAgent: String, private val ipAddress: String) {
     private var whiteListedCookies: MutableMap<String, String> = HashMap()
-    private var ipAddress: String? = null
     private var sessionId: String? = null
 
     fun withWhiteListedCookies(cookies: Map<String, String>): DeviceInformationRequestBuilder {
         this.whiteListedCookies.putAll(cookies)
-        return this
-    }
-
-    fun withIpAddress(ipAddress: String?): DeviceInformationRequestBuilder {
-        this.ipAddress = ipAddress
         return this
     }
 
