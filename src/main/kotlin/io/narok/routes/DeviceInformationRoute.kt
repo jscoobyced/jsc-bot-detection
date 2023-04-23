@@ -9,6 +9,7 @@ import io.ktor.server.routing.*
 import io.narok.models.DeviceInformation
 import io.narok.models.DeviceInformationRequest
 import io.narok.plugins.RoutingConfig
+import io.narok.services.DeviceSignatureService
 import io.sentry.Sentry
 
 object DeviceInformationRouteConfig {
@@ -24,7 +25,9 @@ fun Application.deviceInformationRouting() {
                 try {
                     val deviceInformationRequest = call.receive<DeviceInformationRequest>()
                     val deviceInformation = DeviceInformation.fromDeviceInformationRequest(deviceInformationRequest)
-                    call.respond(deviceInformation)
+                    // TODO - Use DI to inject Service
+                    val deviceInformationWithSignature = DeviceSignatureService().createSignature(deviceInformation)
+                    call.respond(deviceInformationWithSignature)
                 } catch (exception: BadRequestException) {
                     Sentry.captureException(exception)
                     throw exception

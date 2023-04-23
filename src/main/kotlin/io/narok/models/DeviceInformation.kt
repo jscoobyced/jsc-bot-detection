@@ -11,13 +11,20 @@ data class DeviceInformation(
     val path: String,
     val parameters: Map<String, List<String>>? = mapOf(),
     val isHttps: Boolean,
-    val userAgent: String,
-    val whiteListedCookies: Map<String, String>? = mapOf(),
-    val ipAddress: String? = null,
-    val sessionId: String? = null,
+    override val userAgent: String,
+    override val whiteListedCookies: Map<String, String>? = mapOf(),
+    override val ipAddress: String?,
+    override val sessionId: String?,
     val deviceSignature: DeviceSignature? = null,
     val deviceType: DeviceType? = null
-) {
+) : IDeviceInformation {
+
+    fun withSignature(deviceSignature: DeviceSignature): DeviceInformation {
+        return DeviceInformation(
+            domain, path, parameters, isHttps, userAgent, whiteListedCookies, ipAddress, sessionId, deviceSignature
+        )
+    }
+
     companion object {
         fun fromDeviceInformationRequest(deviceInformationRequest: DeviceInformationRequest): DeviceInformation {
             val uri = URI(deviceInformationRequest.url)

@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  api-dev:
+  api:
     build:
       context: .
       dockerfile: etc/docker/Dockerfile
@@ -10,7 +10,7 @@ services:
     env_file:
       - .env
     networks:
-      - jscbot-dev
+      - jscbot
 
 networks:
-  jscbot-dev:
+  jscbot:

@@ -5,11 +5,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class DeviceInformationRequest(
     val url: String,
-    val userAgent: String,
-    val whiteListedCookies: Map<String, String>? = HashMap(),
-    val ipAddress: String? = null,
-    val sessionId: String? = null
-)
+    override val userAgent: String,
+    override val whiteListedCookies: Map<String, String>? = mapOf(),
+    override val ipAddress: String?,
+    override val sessionId: String?
+) : IDeviceInformation
 
 class DeviceInformationRequestBuilder(private val url: String, private val userAgent: String) {
     private var whiteListedCookies: MutableMap<String, String> = HashMap()
