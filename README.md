@@ -2,6 +2,11 @@ JSC Bot Detection Service
 --
 
 [![codecov](https://codecov.io/gh/jscoobyced/jsc-bot-detection/branch/main/graph/badge.svg?token=PH2V3Y06AF)](https://codecov.io/gh/jscoobyced/jsc-bot-detection)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=jscoobyced_jsc-bot-detection&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=jscoobyced_jsc-bot-detection)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=jscoobyced_jsc-bot-detection&metric=bugs)](https://sonarcloud.io/summary/new_code?id=jscoobyced_jsc-bot-detection)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=jscoobyced_jsc-bot-detection&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=jscoobyced_jsc-bot-detection)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jscoobyced_jsc-bot-detection&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=jscoobyced_jsc-bot-detection)
+
 
 This project aims at providing a base bot detection and classification in order to help protect your environments.
 
