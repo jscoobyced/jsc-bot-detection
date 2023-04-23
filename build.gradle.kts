@@ -74,3 +74,11 @@ koverReport {
         }
     }
 }
+
+sonarqube {
+    properties {
+        property("sonar.projectKey", "jscoobyced_jsc-bot-detection")
+        property("sonar.organization", "jscoobyced-github")
+        property("sonar.host.url", "https://sonarcloud.io")
+    }
+}
