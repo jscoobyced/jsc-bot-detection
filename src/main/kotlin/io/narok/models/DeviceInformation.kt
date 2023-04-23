@@ -21,7 +21,13 @@ data class DeviceInformation(
 
     fun withSignature(deviceSignature: DeviceSignature): DeviceInformation {
         return DeviceInformation(
-            domain, path, parameters, isHttps, userAgent, whiteListedCookies, ipAddress, sessionId, deviceSignature
+            domain, path, parameters, isHttps, userAgent, whiteListedCookies, ipAddress, sessionId, deviceSignature, deviceType
+        )
+    }
+
+    fun withDeviceType(deviceType: DeviceType): DeviceInformation {
+        return DeviceInformation(
+            domain, path, parameters, isHttps, userAgent, whiteListedCookies, ipAddress, sessionId, deviceSignature, deviceType
         )
     }
 

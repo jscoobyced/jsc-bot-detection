@@ -1,7 +1,7 @@
 package io.narok.services
 
 import io.narok.services.Hash.toHex
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class HashTest {

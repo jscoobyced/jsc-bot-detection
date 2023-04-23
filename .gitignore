@@ -43,3 +43,6 @@ bin/
 
 ### Environment files ###
 .env
+
+### 51Degrees Hash File
+src/main/resources/51Degrees-LiteV4.1.hash
