@@ -18,7 +18,7 @@ fun Application.configureHTTP() {
         allowMethod(HttpMethod.Put)
         allowMethod(HttpMethod.Delete)
         allowHeader(HttpHeaders.Authorization)
-        anyHost() // @TODO: Don't do this in production if possible. Try to limit it.
+        anyHost()
     }
     install(Compression) {
         gzip {

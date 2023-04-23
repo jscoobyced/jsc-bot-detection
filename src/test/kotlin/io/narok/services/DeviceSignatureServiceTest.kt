@@ -9,7 +9,7 @@ class DeviceSignatureServiceTest {
 
     private val userAgent = "User-Agent"
     private val ipAddress = "1.2.3.4"
-    private val expected = "365a39435d629d476a1996d7885c9177"
+    private val expected = "fc50ae0fc75899e0555e242b5861f50cd596c2abf2160024201e07b8bfc573a6"
 
     @Test
     fun `DeviceInformation passed is valid`() {

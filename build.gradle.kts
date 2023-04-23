@@ -9,7 +9,7 @@ plugins {
     id("io.ktor.plugin") version "2.2.4"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.20"
     id("org.jetbrains.kotlinx.kover") version "0.7.0-Alpha"
-
+    id("org.sonarqube") version "4.0.0.2929"
 }
 
 group = "io.narok"
