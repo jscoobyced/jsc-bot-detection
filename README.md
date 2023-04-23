@@ -25,7 +25,10 @@ Alternatively, you can do a `./gradlew run` from the root of th project (or via 
 
 You can also run via docker-compose.
 
-To do so, copy the `.env.example` file to `.env`. Then run `docker-compose up api`.
+Use IntelliJ `Services` panel to run the `api-dev` service. Alternatively run the command in a terminal:
+```shell
+docker-compose up -d api-dev
+```
 
 # Production mode
 To run in production, build the image and provide a `.env` file or the fields in it as environment variable to your runtime.

@@ -1,6 +1,19 @@
 version: '3.8'
 
 services:
+  api-dev:
+    image: gradle:8-alpine
+    user: 1000:1000
+    volumes:
+      - type: bind
+        source: ${PWD}
+        target: /home/gradle/
+    ports:
+      - "8010:8010"
+    networks:
+      - jscbot-dev
+    command: gradle --no-daemon run
+
   api:
     build:
       context: .
@@ -13,4 +26,5 @@ services:
       - jscbot
 
 networks:
+  jscbot-dev:
   jscbot:
