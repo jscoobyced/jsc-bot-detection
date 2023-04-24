@@ -56,8 +56,8 @@ jobs:
 
       - name: Build and analyze
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_SCANNER_OPTS: -Dsonar:projectKey=${env:GITHUB_REPOSITORY_OWNER}_jsc-bot-detection -Dsonar:organization=${env:GITHUB_REPOSITORY_OWNER}"
         run: ./gradlew build sonarqube --info
 
   build_push:
