@@ -10,13 +10,26 @@ JSC Bot Detection Service
 
 This project aims at providing a base bot detection and classification in order to help protect your environments.
 
-# Getting started
+# Getting started - Development mode
 
-## Development mode
+## GitHub Actions
+
+In order to pass all the steps in GitHub actions, you need to:
+- Create an account in https://codecov.io (login using GH so it creates an organization with your repo name)
+  - Create a token and save it in GH project settings under `Secrets`
+    - Name: CODECOV_TOKEN
+    - Value: the token from codecov
+- Create an account in https://sonarcloud.io (login using GH so it creates an organization with your repo name)
+  - Create a token and save it in GH project settings under `Secrets`
+    - Name: SONARCLOUD_TOKEN
+    - Value: the token from sonarcloud
+
+You will need to setup your `Quality Gate` and `New Code` in sonarcloud for best reporting. Remove the `Coverage` from the `Quality Gate` as we are using Codecov.
+If you have custom organization and project name, you can override them in the [etc/bin/sonar.sh](etc/bin/sonar.sh) file.
+
+## Running the application
 
 By default, whichever way you are going to execute the application, it will run in development mode. For production mode, see the below section. 
-
-You will need to download the free device binary file from [here](https://github.com/51Degrees/device-detection-data/raw/master/51Degrees-LiteV4.1.hash) and place it in the root of this project.
 
 ### Run in IntelliJ
 This project uses Kotlin, and was created in IntelliJ Community edition. You should be able to clone this repository then open the project in IntelliJ.
@@ -34,7 +47,7 @@ Use IntelliJ `Services` panel to run the `api-dev` service. Alternatively run th
 docker-compose up -d api-dev
 ```
 
-## Production mode
+# Production mode
 To run in production, build the image and provide a `.env` file or the fields in it as environment variable to your runtime.
 
 Soon will be added deployment facilities.

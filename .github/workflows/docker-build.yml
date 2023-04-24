@@ -9,6 +9,7 @@ on:
 
 jobs:
   test:
+    name: Run tests and upload coverage to Codecov
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,6 +31,7 @@ jobs:
           fail_ci_if_error: true
 
   analyze:
+    name: Run SonarCloud analysis
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
