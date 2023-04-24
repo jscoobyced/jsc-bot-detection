@@ -77,8 +77,8 @@ koverReport {
 
 sonarqube {
     properties {
-        property("sonar.projectKey", "IndyTheDog_jsc-bot-detection")
-        property("sonar.organization", "indythedog")
-        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.projectKey", "SONAR_PROJECT_KEY")
+        property("sonar.organization", "SONAR_ORGANISATION")
+        property("sonar.host.url", "SONAR_HOST")
     }
 }
