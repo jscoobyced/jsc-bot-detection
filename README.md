@@ -16,13 +16,13 @@ This project aims at providing a base bot detection and classification in order 
 
 In order to pass all the steps in GitHub actions, you need to:
 - Create an account in https://codecov.io (login using GH so it creates an organization with your repo name)
--- Create a token and save it in GH project settings under `Secrets`
---- Name: CODECOV_TOKEN
---- Value: the token from codecov
+  - Create a token and save it in GH project settings under `Secrets`
+    - Name: CODECOV_TOKEN
+    - Value: the token from codecov
 - Create an account in https://sonarcloud.io (login using GH so it creates an organization with your repo name)
--- Create a token and save it in GH project settings under `Secrets`
---- Name: SONARCLOUD_TOKEN
---- Value: the token from sonarcloud
+  - Create a token and save it in GH project settings under `Secrets`
+    - Name: SONARCLOUD_TOKEN
+    - Value: the token from sonarcloud
 
 You will need to setup your `Quality Gate` and `New Code` in sonarcloud for best reporting. Remove the `Coverage` from the `Quality Gate` as we are using Codecov.
 If you have custom organization and project name, you can override them in the [etc/bin/sonar.sh](etc/bin/sonar.sh) file.
