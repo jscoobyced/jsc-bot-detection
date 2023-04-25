@@ -7,10 +7,11 @@ JSC Bot Detection Service
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=jscoobyced_jsc-bot-detection&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=jscoobyced_jsc-bot-detection)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jscoobyced_jsc-bot-detection&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=jscoobyced_jsc-bot-detection)
 
-
 This project aims at providing a base bot detection and classification in order to help protect your environments.
 
 # Getting started - Development mode
+
+You will need to download the 51Degrees [51Degrees-LiteV4.1.hash](https://github.com/51Degrees/device-detection-data/raw/master/51Degrees-LiteV4.1.hash) file and place it to your `resources` folder.
 
 ## GitHub Actions
 

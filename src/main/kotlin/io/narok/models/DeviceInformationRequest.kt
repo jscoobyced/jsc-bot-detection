@@ -6,12 +6,16 @@ import kotlinx.serialization.Serializable
 data class DeviceInformationRequest(
     val url: String,
     override val userAgent: String,
+    override val ipAddress: String,
     override val whiteListedCookies: Map<String, String>? = mapOf(),
-    override val ipAddress: String?,
     override val sessionId: String?
 ) : IDeviceInformation
 
-class DeviceInformationRequestBuilder(private val url: String, private val userAgent: String, private val ipAddress: String) {
+class DeviceInformationRequestBuilder(
+    private val url: String,
+    private val userAgent: String,
+    private val ipAddress: String
+) {
     private var whiteListedCookies: MutableMap<String, String> = HashMap()
     private var sessionId: String? = null
 
@@ -26,6 +30,6 @@ class DeviceInformationRequestBuilder(private val url: String, private val userA
     }
 
     fun build(): DeviceInformationRequest {
-        return DeviceInformationRequest(url, userAgent, whiteListedCookies, ipAddress, sessionId)
+        return DeviceInformationRequest(url, userAgent, ipAddress, whiteListedCookies, sessionId)
     }
 }

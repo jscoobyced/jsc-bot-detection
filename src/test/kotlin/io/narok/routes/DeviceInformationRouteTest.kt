@@ -77,6 +77,7 @@ class DeviceInformationRouteTest {
             assertNull(deviceInformation.deviceSignature)
         }
     }
+
     @Test
     fun `Post a DeviceInformation with empty string User-Agent`() = testApplication {
         val httpClient = createClient {

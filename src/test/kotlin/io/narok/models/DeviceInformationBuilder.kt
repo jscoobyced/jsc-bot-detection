@@ -8,10 +8,11 @@ class DeviceInformationBuilder {
     private val isHttps = false
     private var userAgent = ""
     private val whiteListedCookies = mapOf<String, String>()
-    private var ipAddress: String? = null
+    private var ipAddress: String = ""
     private val sessionId = ""
     private val deviceSignature: DeviceSignature? = null
-    private val deviceType: DeviceType? = null
+    private val deviceType: DeviceType = DeviceType.UNASSIGNED
+    private val userType: UserType? = null
 
     fun withUserAgent(userAgent: String): DeviceInformationBuilder {
         this.userAgent = userAgent
@@ -30,11 +31,12 @@ class DeviceInformationBuilder {
             parameters,
             isHttps,
             userAgent,
-            whiteListedCookies,
             ipAddress,
+            whiteListedCookies,
             sessionId,
             deviceSignature,
-            deviceType
+            deviceType,
+            userType
         )
     }
 }
