@@ -11,7 +11,8 @@ This project aims at providing a base bot detection and classification in order 
 
 # Getting started - Development mode
 
-You will need to download the 51Degrees [51Degrees-LiteV4.1.hash](https://github.com/51Degrees/device-detection-data/raw/master/51Degrees-LiteV4.1.hash) file and place it to your `resources` folder.
+You will need to download the 51Degrees [51Degrees-LiteV4.1.hash](https://github.com/51Degrees/device-detection-data/raw/master/51Degrees-LiteV4.1.hash) file
+and place it to your main sources `resources` folder.
 
 ## GitHub Actions
 
