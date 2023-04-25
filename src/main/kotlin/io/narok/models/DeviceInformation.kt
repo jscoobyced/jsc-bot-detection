@@ -12,22 +12,43 @@ data class DeviceInformation(
     val parameters: Map<String, List<String>>? = mapOf(),
     val isHttps: Boolean,
     override val userAgent: String,
+    override val ipAddress: String,
     override val whiteListedCookies: Map<String, String>? = mapOf(),
-    override val ipAddress: String?,
     override val sessionId: String?,
     val deviceSignature: DeviceSignature? = null,
-    val deviceType: DeviceType? = null
+    val deviceType: DeviceType = DeviceType.UNASSIGNED,
+    val userType: UserType? = null
 ) : IDeviceInformation {
 
     fun withSignature(deviceSignature: DeviceSignature): DeviceInformation {
         return DeviceInformation(
-            domain, path, parameters, isHttps, userAgent, whiteListedCookies, ipAddress, sessionId, deviceSignature, deviceType
+            domain,
+            path,
+            parameters,
+            isHttps,
+            userAgent,
+            ipAddress,
+            whiteListedCookies,
+            sessionId,
+            deviceSignature,
+            deviceType,
+            userType
         )
     }
 
     fun withDeviceType(deviceType: DeviceType): DeviceInformation {
         return DeviceInformation(
-            domain, path, parameters, isHttps, userAgent, whiteListedCookies, ipAddress, sessionId, deviceSignature, deviceType
+            domain,
+            path,
+            parameters,
+            isHttps,
+            userAgent,
+            ipAddress,
+            whiteListedCookies,
+            sessionId,
+            deviceSignature,
+            deviceType,
+            userType
         )
     }
 
@@ -40,8 +61,8 @@ data class DeviceInformation(
                 Url(deviceInformationRequest.url).parameters.toMap(),
                 uri.scheme?.toLowerCasePreservingASCIIRules() == "https",
                 deviceInformationRequest.userAgent,
-                deviceInformationRequest.whiteListedCookies,
                 deviceInformationRequest.ipAddress,
+                deviceInformationRequest.whiteListedCookies,
                 deviceInformationRequest.sessionId
             )
         }

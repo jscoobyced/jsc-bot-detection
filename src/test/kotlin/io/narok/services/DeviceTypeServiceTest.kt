@@ -1,45 +1,46 @@
 package io.narok.services
 
+import io.ktor.server.testing.*
 import io.narok.models.DeviceInformationBuilder
-import io.narok.models.crawlerUserAgent
+import io.narok.models.DeviceType
 import io.narok.models.googleChromeLinuxUserAgent
+import io.narok.models.mobileChromeLinuxUserAgent
+import org.kodein.di.ktor.closestDI
 import kotlin.test.Test
-import kotlin.test.assertFalse
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
+import kotlin.test.assertEquals
 
 class DeviceTypeServiceTest {
 
     @Test
-    fun `should return valid DeviceType if input is valid`() {
-        val deviceInformation = DeviceInformationBuilder().withUserAgent(crawlerUserAgent()).build()
-        val deviceTypeService: IDeviceTypeService = DeviceTypeService()
+    fun `should return valid DeviceType if input is valid`() = testApplication {
+        application {
+            val di = closestDI()
+            val deviceTypeService: IDeviceTypeService = DeviceTypeService(di)
 
-        val deviceInformationWithDeviceType = deviceTypeService.createDeviceType(deviceInformation)
-        val nullableDeviceType = deviceInformationWithDeviceType.deviceType
+            var deviceInformation = DeviceInformationBuilder().withUserAgent(googleChromeLinuxUserAgent()).build()
+            var deviceInformationWithDeviceType = deviceTypeService.createDeviceType(deviceInformation)
+            var deviceType = deviceInformationWithDeviceType.deviceType
+            assertEquals(DeviceType.DESKTOP, deviceType)
 
-        assertNotNull(nullableDeviceType)
-        val deviceType = nullableDeviceType!!
-        assertFalse(deviceType.isBot)
-        assertFalse(deviceType.isBadBot)
-        assertFalse(deviceType.isKnownBot)
-        assertTrue(deviceType.isHuman)
+            deviceInformation = DeviceInformationBuilder().withUserAgent(mobileChromeLinuxUserAgent()).build()
+            deviceInformationWithDeviceType = deviceTypeService.createDeviceType(deviceInformation)
+            deviceType = deviceInformationWithDeviceType.deviceType
+            assertEquals(DeviceType.MOBILE, deviceType)
+        }
     }
 
     @Test
-    fun `should fail if DeviceInformation has no User-Agent`() {
-        val deviceInformation = DeviceInformationBuilder().build()
-        val deviceTypeService: IDeviceTypeService = DeviceTypeService()
+    fun `should fail if DeviceInformation has no User-Agent`() = testApplication {
+        application {
+            val di = closestDI()
+            val deviceInformation = DeviceInformationBuilder().build()
+            val deviceTypeService: IDeviceTypeService = DeviceTypeService(di)
 
-        val deviceInformationWithDeviceType = deviceTypeService.createDeviceType(deviceInformation)
-        val nullableDeviceType = deviceInformationWithDeviceType.deviceType
+            val deviceInformationWithDeviceType = deviceTypeService.createDeviceType(deviceInformation)
+            val deviceType = deviceInformationWithDeviceType.deviceType
 
-        assertNotNull(nullableDeviceType)
-        val deviceType = nullableDeviceType!!
-        assertFalse(deviceType.isBot)
-        assertFalse(deviceType.isBadBot)
-        assertFalse(deviceType.isKnownBot)
-        assertTrue(deviceType.isHuman)
+            assertEquals(DeviceType.UNASSIGNED, deviceType)
+        }
     }
 
 }
