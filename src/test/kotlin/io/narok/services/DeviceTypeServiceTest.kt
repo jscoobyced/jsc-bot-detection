@@ -5,6 +5,9 @@ import io.narok.models.DeviceInformationBuilder
 import io.narok.models.DeviceType
 import io.narok.models.googleChromeLinuxUserAgent
 import io.narok.models.mobileChromeLinuxUserAgent
+import io.narok.plugins.mainDI
+import io.narok.repo.fiftyOneDegreesTestDIModule
+import org.kodein.di.DI
 import org.kodein.di.ktor.closestDI
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -14,8 +17,7 @@ class DeviceTypeServiceTest {
     @Test
     fun `should return valid DeviceType if input is valid`() = testApplication {
         application {
-            val di = closestDI()
-            val deviceTypeService: IDeviceTypeService = DeviceTypeService(di)
+            val deviceTypeService: IDeviceTypeService = DeviceTypeService(closestDI())
 
             var deviceInformation = DeviceInformationBuilder().withUserAgent(googleChromeLinuxUserAgent()).build()
             var deviceInformationWithDeviceType = deviceTypeService.createDeviceType(deviceInformation)
@@ -32,9 +34,25 @@ class DeviceTypeServiceTest {
     @Test
     fun `should fail if DeviceInformation has no User-Agent`() = testApplication {
         application {
-            val di = closestDI()
+            val deviceTypeService: IDeviceTypeService = DeviceTypeService(closestDI())
             val deviceInformation = DeviceInformationBuilder().build()
-            val deviceTypeService: IDeviceTypeService = DeviceTypeService(di)
+
+            val deviceInformationWithDeviceType = deviceTypeService.createDeviceType(deviceInformation)
+            val deviceType = deviceInformationWithDeviceType.deviceType
+
+            assertEquals(DeviceType.UNASSIGNED, deviceType)
+        }
+    }
+
+    @Test
+    fun `should fail if DeviceInformation is null`() = testApplication {
+        application {
+            DI {
+                extend(mainDI)
+                import(fiftyOneDegreesTestDIModule, allowOverride = true)
+            }
+            val deviceInformation = DeviceInformationBuilder().build()
+            val deviceTypeService: IDeviceTypeService = DeviceTypeService(closestDI())
 
             val deviceInformationWithDeviceType = deviceTypeService.createDeviceType(deviceInformation)
             val deviceType = deviceInformationWithDeviceType.deviceType

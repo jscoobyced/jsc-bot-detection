@@ -6,29 +6,26 @@ import fiftyone.pipeline.core.flowelements.Pipeline
 import fiftyone.pipeline.util.FileFinder
 import io.narok.models.DeviceInformation
 import io.narok.models.DeviceType
-import io.sentry.Sentry
+import org.kodein.di.DI
+import org.kodein.di.bind
+import org.kodein.di.singleton
 
 class FiftyOneDegreesRepo : IFiftyOneDegreesRepo {
 
     private val lazyPipeline: Pipeline by lazy {
         val dataFile: String = FileFinder.getFilePath("51Degrees-LiteV4.1.hash").absolutePath
-        DeviceDetectionPipelineBuilder()
-            .useOnPremise(dataFile, false)
-            .build()
+        DeviceDetectionPipelineBuilder().useOnPremise(dataFile, false).build()
     }
 
     override fun getDeviceType(deviceInformation: DeviceInformation): DeviceType {
-        try {
-
-            val flowData = lazyPipeline.createFlowData()
-            flowData.addEvidence("header.user-agent", deviceInformation.userAgent)
-            flowData.process()
-            val device: DeviceData = flowData.get(DeviceData::class.java)
-            return if (device.isMobile.hasValue() && device.isMobile.value) DeviceType.MOBILE else DeviceType.DESKTOP
-        } catch (exception: NullPointerException) {
-            Sentry.captureException(exception)
-        }
-
-        return DeviceType.UNKNOWN
+        val flowData = lazyPipeline.createFlowData()
+        flowData.addEvidence("header.user-agent", deviceInformation.userAgent)
+        flowData.process()
+        val device: DeviceData = flowData[DeviceData::class.java]
+        return if (device.isMobile.hasValue() && device.isMobile.value) DeviceType.MOBILE else DeviceType.DESKTOP
     }
+}
+
+val fiftyOneDegreesDIModule = DI.Module("deviceDetectionModule") {
+    bind<IFiftyOneDegreesRepo> { singleton { FiftyOneDegreesRepo() } }
 }
