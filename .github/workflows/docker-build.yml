@@ -20,6 +20,9 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
+      - name: Fetch 51degrees hash file
+        run: wget https://github.com/51Degrees/device-detection-data/raw/master/51Degrees-LiteV4.1.hash -O ./src/main/resources/51Degrees-LiteV4.1.hash
+
       - name: Run Tests
         run: ./gradlew koverXmlReport
 
