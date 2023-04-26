@@ -14,15 +14,18 @@ class DeviceInformationService(
 ) : IDeviceInformationService, DIAware {
     private val deviceSignatureService = DeviceSignatureService()
     private val deviceTypeService = DeviceTypeService(di)
+    private val userTypeService = UserTypeService()
 
     override suspend fun getDeviceInformation(deviceInformationRequest: DeviceInformationRequest): DeviceInformation {
         val deviceInformation = DeviceInformation.fromDeviceInformationRequest(deviceInformationRequest)
 
         val deviceInformationWithSignature = createSignature(deviceInformation)
         val deviceInformationWithDeviceType = createDeviceType(deviceInformation)
+        val deviceInformationWithUserType = createUserType(deviceInformation)
 
         return deviceInformation.withDeviceType(deviceInformationWithDeviceType.deviceType)
             .withSignature(deviceInformationWithSignature.deviceSignature)
+            .withUserType(deviceInformationWithUserType.userType)
     }
 
     private suspend fun createSignature(deviceInformation: DeviceInformation) = withContext(dispatcher) {
@@ -31,6 +34,10 @@ class DeviceInformationService(
 
     private suspend fun createDeviceType(deviceInformation: DeviceInformation) = withContext(dispatcher) {
         deviceTypeService.createDeviceType(deviceInformation)
+    }
+
+    private suspend fun createUserType(deviceInformation: DeviceInformation) = withContext(dispatcher) {
+        userTypeService.createUserType(deviceInformation)
     }
 
 }

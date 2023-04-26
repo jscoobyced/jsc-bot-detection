@@ -7,8 +7,9 @@ class DeviceInformationBuilder {
     private val parameters = mapOf<String, List<String>>()
     private val isHttps = false
     private var userAgent = ""
-    private val whiteListedCookies = mapOf<String, String>()
     private var ipAddress: String = ""
+    private val whiteListedCookies = mapOf<String, String>()
+    private val whiteListedHttpHeaders = mapOf<String, String>()
     private val sessionId = ""
     private val deviceSignature: DeviceSignature? = null
     private val deviceType: DeviceType = DeviceType.UNASSIGNED
@@ -33,6 +34,7 @@ class DeviceInformationBuilder {
             userAgent,
             ipAddress,
             whiteListedCookies,
+            whiteListedHttpHeaders,
             sessionId,
             deviceSignature,
             deviceType,

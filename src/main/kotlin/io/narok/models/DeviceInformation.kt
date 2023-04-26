@@ -14,6 +14,7 @@ data class DeviceInformation(
     override val userAgent: String,
     override val ipAddress: String,
     override val whiteListedCookies: Map<String, String>? = mapOf(),
+    override val whiteListedHttpHeaders: Map<String, String>? = mapOf(),
     override val sessionId: String?,
     val deviceSignature: DeviceSignature? = null,
     val deviceType: DeviceType = DeviceType.UNASSIGNED,
@@ -29,6 +30,7 @@ data class DeviceInformation(
             userAgent,
             ipAddress,
             whiteListedCookies,
+            whiteListedHttpHeaders,
             sessionId,
             deviceSignature,
             deviceType,
@@ -45,6 +47,24 @@ data class DeviceInformation(
             userAgent,
             ipAddress,
             whiteListedCookies,
+            whiteListedHttpHeaders,
+            sessionId,
+            deviceSignature,
+            deviceType,
+            userType
+        )
+    }
+
+    fun withUserType(userType: UserType?): DeviceInformation {
+        return DeviceInformation(
+            domain,
+            path,
+            parameters,
+            isHttps,
+            userAgent,
+            ipAddress,
+            whiteListedCookies,
+            whiteListedHttpHeaders,
             sessionId,
             deviceSignature,
             deviceType,
@@ -63,6 +83,7 @@ data class DeviceInformation(
                 deviceInformationRequest.userAgent,
                 deviceInformationRequest.ipAddress,
                 deviceInformationRequest.whiteListedCookies,
+                deviceInformationRequest.whiteListedHttpHeaders,
                 deviceInformationRequest.sessionId
             )
         }
