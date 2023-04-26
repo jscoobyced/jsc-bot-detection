@@ -10,6 +10,7 @@ import io.narok.models.DeviceInformation
 import io.narok.models.DeviceInformationRequest
 import io.narok.plugins.RoutingConfig
 import io.narok.services.IDeviceSignatureService
+import io.narok.services.IDeviceTypeService
 import io.sentry.Sentry
 import org.kodein.di.instance
 import org.kodein.di.ktor.closestDI
@@ -29,7 +30,9 @@ fun Application.deviceInformationRouting() {
                     val deviceInformation = DeviceInformation.fromDeviceInformationRequest(deviceInformationRequest)
                     val deviceSignatureService by call.closestDI().instance<IDeviceSignatureService>()
                     val deviceInformationWithSignature = deviceSignatureService.createSignature(deviceInformation)
-                    call.respond(deviceInformationWithSignature)
+                    val deviceTypeService by call.closestDI().instance<IDeviceTypeService>()
+                    val deviceInformationWithSignatureAndType = deviceTypeService.createDeviceType(deviceInformationWithSignature)
+                    call.respond(deviceInformationWithSignatureAndType)
                 } catch (exception: BadRequestException) {
                     Sentry.captureException(exception)
                     throw exception

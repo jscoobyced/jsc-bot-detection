@@ -32,11 +32,12 @@ class DeviceInformationRouteTest {
                 bearerAuth(token)
                 setBody<DeviceInformationRequest>(deviceInformationRequest)
             }
-            val expected = "72ddcdeb90707207fd6b8a0afd3dd0b2d6dd2f96c93d11a1b591c012bffb5de6"
+            val expectedSignature = "d0bbf8cd5ed9984915bf95c465b5202689ee8c62f0610e4eaeca93b5c4179b1b"
             val deviceInformation = response.body<DeviceInformation>()
             assertNotNull(deviceInformation.domain)
             assertNotNull(deviceInformation.deviceSignature)
-            assertEquals(expected, deviceInformation.deviceSignature?.signature)
+            assertEquals(expectedSignature, deviceInformation.deviceSignature?.signature)
+            assertEquals(DeviceType.DESKTOP, deviceInformation.deviceType)
             assertEquals(HttpStatusCode.OK, response.status)
         }
     }
