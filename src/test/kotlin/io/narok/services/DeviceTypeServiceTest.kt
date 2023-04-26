@@ -46,19 +46,17 @@ class DeviceTypeServiceTest {
 
     @Test
     fun `should fail if DeviceInformation is null`() = testApplication {
-        application {
-            val testDi = DI {
-                extend(mainDI)
-                import(fiftyOneDegreesTestDIModule, allowOverride = true)
-            }
-            val deviceInformation = DeviceInformationBuilder().withUserAgent(googleChromeLinuxUserAgent()).build()
-            val deviceTypeService: IDeviceTypeService = DeviceTypeService(testDi)
-
-            val deviceInformationWithDeviceType = deviceTypeService.createDeviceType(deviceInformation)
-            val deviceType = deviceInformationWithDeviceType.deviceType
-
-            assertEquals(DeviceType.UNASSIGNED, deviceType)
+        val testDi = DI {
+            extend(mainDI)
+            import(fiftyOneDegreesTestDIModule, allowOverride = true)
         }
+        val deviceInformation = DeviceInformationBuilder().withUserAgent(googleChromeLinuxUserAgent()).build()
+        val deviceTypeService: IDeviceTypeService = DeviceTypeService(testDi)
+
+        val deviceInformationWithDeviceType = deviceTypeService.createDeviceType(deviceInformation)
+        val deviceType = deviceInformationWithDeviceType.deviceType
+
+        assertEquals(DeviceType.UNASSIGNED, deviceType)
     }
 
 }

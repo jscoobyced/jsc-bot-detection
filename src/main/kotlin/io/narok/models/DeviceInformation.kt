@@ -20,7 +20,7 @@ data class DeviceInformation(
     val userType: UserType? = null
 ) : IDeviceInformation {
 
-    fun withSignature(deviceSignature: DeviceSignature): DeviceInformation {
+    fun withSignature(deviceSignature: DeviceSignature?): DeviceInformation {
         return DeviceInformation(
             domain,
             path,
