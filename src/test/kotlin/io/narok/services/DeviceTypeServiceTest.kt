@@ -47,12 +47,12 @@ class DeviceTypeServiceTest {
     @Test
     fun `should fail if DeviceInformation is null`() = testApplication {
         application {
-            DI {
+            val testDi = DI {
                 extend(mainDI)
                 import(fiftyOneDegreesTestDIModule, allowOverride = true)
             }
-            val deviceInformation = DeviceInformationBuilder().build()
-            val deviceTypeService: IDeviceTypeService = DeviceTypeService(closestDI())
+            val deviceInformation = DeviceInformationBuilder().withUserAgent(googleChromeLinuxUserAgent()).build()
+            val deviceTypeService: IDeviceTypeService = DeviceTypeService(testDi)
 
             val deviceInformationWithDeviceType = deviceTypeService.createDeviceType(deviceInformation)
             val deviceType = deviceInformationWithDeviceType.deviceType
