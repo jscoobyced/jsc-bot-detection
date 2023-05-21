@@ -11,3 +11,7 @@ fun noIpAddressDeviceInformationRequest(): DeviceInformationRequest {
 fun noUserAgentDeviceInformationRequest(): DeviceInformationRequest {
     return DeviceInformationRequestBuilder("http://localhost", "", "192.168.1.1").build()
 }
+
+fun malFormedUrlDeviceInformationRequest(): DeviceInformationRequest {
+    return DeviceInformationRequestBuilder("http:/localhost", "", "192.168.1.1").build()
+}

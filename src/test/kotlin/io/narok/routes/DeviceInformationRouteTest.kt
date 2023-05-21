@@ -109,6 +109,23 @@ class DeviceInformationRouteTest {
             assertEquals(HttpStatusCode.InternalServerError, response.status)
         }
     }
+    @Test
+    fun `Post an invalid DeviceInformation with malformed URL`() = testApplication {
+        val httpClient = createClient {
+            install(ContentNegotiation) {
+                json()
+            }
+        }
+        withToken(httpClient) { token ->
+
+            val response = httpClient.post(DeviceInformationRouteConfig.path) {
+                contentType(ContentType.Application.Json)
+                bearerAuth(token)
+                setBody(malFormedUrlDeviceInformationRequest())
+            }
+            assertEquals(HttpStatusCode.InternalServerError, response.status)
+        }
+    }
 
     @Test
     fun `Post a DeviceInformation unauthorized`() = testApplication {
