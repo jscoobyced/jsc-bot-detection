@@ -11,9 +11,7 @@ class DeviceSignatureService : IDeviceSignatureService {
     }
 
     private fun createSignatureV1(deviceInformation: DeviceInformation): DeviceSignature {
-        if (deviceInformation.userAgent.isBlank() || deviceInformation.ipAddress.isBlank()) throw IllegalArgumentException(
-            "User-Agent and IpAddress cannot be blank."
-        )
+        require(deviceInformation.userAgent.isNotBlank() && deviceInformation.ipAddress.isNotBlank()) { "User-Agent nor IpAddress cannot be blank." }
         val md5 = Hash.md5("${deviceInformation.userAgent}${deviceInformation.ipAddress}")
         return DeviceSignature(md5.toHex(), DeviceSignatureVersion.ONE)
     }

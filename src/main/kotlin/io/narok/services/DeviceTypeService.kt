@@ -9,7 +9,7 @@ import org.kodein.di.instance
 
 class DeviceTypeService(override val di: DI) : IDeviceTypeService, DIAware {
     override fun createDeviceType(deviceInformation: DeviceInformation): DeviceType {
-        if (deviceInformation.userAgent.isBlank()) throw IllegalArgumentException("User-Agent cannot be blank.")
+        require(deviceInformation.userAgent.isNotBlank()) { "User-Agent cannot be blank." }
         val fiftyOneDegreesRepo: IFiftyOneDegreesRepo by di.instance<IFiftyOneDegreesRepo>()
         return fiftyOneDegreesRepo.getDeviceType(deviceInformation)
     }
