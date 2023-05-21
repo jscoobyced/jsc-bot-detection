@@ -48,7 +48,7 @@ class DeviceInformationRouteTest {
                 contentType(ContentType.Application.Json)
                 bearerAuth(token)
             }
-            assertEquals(HttpStatusCode.BadRequest, response.status)
+            assertEquals(HttpStatusCode.InternalServerError, response.status)
         }
     }
 
@@ -66,9 +66,9 @@ class DeviceInformationRouteTest {
                 bearerAuth(token)
                 setBody(noIpAddressDeviceInformationRequest())
             }
-            assertEquals(HttpStatusCode.OK, response.status)
-            val deviceInformation = response.body<DeviceInformation>()
-            assertEquals(DeviceSignatureVersion.INVALID, deviceInformation.deviceSignature?.version)
+            assertEquals(HttpStatusCode.InternalServerError, response.status)
+            val errorResponse = response.body<ErrorResponse>()
+            assertEquals("User-Agent nor IpAddress cannot be blank.", errorResponse.message)
         }
     }
 
@@ -86,9 +86,9 @@ class DeviceInformationRouteTest {
                 bearerAuth(token)
                 setBody(noUserAgentDeviceInformationRequest())
             }
-            assertEquals(HttpStatusCode.OK, response.status)
-            val deviceInformation = response.body<DeviceInformation>()
-            assertEquals(DeviceSignatureVersion.INVALID, deviceInformation.deviceSignature?.version)
+            assertEquals(HttpStatusCode.InternalServerError, response.status)
+            val errorResponse = response.body<ErrorResponse>()
+            assertEquals("User-Agent nor IpAddress cannot be blank.", errorResponse.message)
         }
     }
 
@@ -106,7 +106,7 @@ class DeviceInformationRouteTest {
                 bearerAuth(token)
                 setBody("bad format")
             }
-            assertEquals(HttpStatusCode.BadRequest, response.status)
+            assertEquals(HttpStatusCode.InternalServerError, response.status)
         }
     }
 

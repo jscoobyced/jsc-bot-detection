@@ -1,6 +1,9 @@
 package io.narok.services
 
-import io.narok.models.*
+import io.narok.models.DeviceInformation
+import io.narok.models.DeviceInformationRequest
+import io.narok.models.DeviceSignature
+import io.narok.models.DeviceType
 import io.sentry.Sentry
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -26,12 +29,12 @@ class DeviceInformationService(
             .withUserType(deviceInformationWithUserType.userType)
     }
 
-    private suspend fun createSignature(deviceInformation: DeviceInformation) = withContext(dispatcher) {
-        try {
+    private fun createSignature(deviceInformation: DeviceInformation): DeviceSignature {
+        return try {
             deviceSignatureService.createSignature(deviceInformation)
         } catch (exception: IllegalArgumentException) {
             Sentry.captureException(exception)
-            DeviceSignature("", DeviceSignatureVersion.INVALID)
+            throw exception
         }
     }
 
