@@ -11,7 +11,6 @@ import io.narok.withToken
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import kotlin.test.assertNull
 
 class DeviceInformationRouteTest {
     @Test
@@ -69,7 +68,7 @@ class DeviceInformationRouteTest {
             }
             assertEquals(HttpStatusCode.OK, response.status)
             val deviceInformation = response.body<DeviceInformation>()
-            assertNull(deviceInformation.deviceSignature)
+            assertEquals(DeviceSignatureVersion.INVALID, deviceInformation.deviceSignature?.version)
         }
     }
 
@@ -89,7 +88,7 @@ class DeviceInformationRouteTest {
             }
             assertEquals(HttpStatusCode.OK, response.status)
             val deviceInformation = response.body<DeviceInformation>()
-            assertNull(deviceInformation.deviceSignature)
+            assertEquals(DeviceSignatureVersion.INVALID, deviceInformation.deviceSignature?.version)
         }
     }
 

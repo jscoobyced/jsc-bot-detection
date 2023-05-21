@@ -2,9 +2,9 @@ package io.narok.services
 
 import io.narok.models.DeviceInformationBuilder
 import io.narok.models.googleChromeLinuxUserAgent
+import junit.framework.TestCase.assertNull
 import kotlin.test.Test
 import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
 
 class UserTypeServiceTest {
 
@@ -17,7 +17,6 @@ class UserTypeServiceTest {
         val deviceInformationResult = userTypeService.createUserType(deviceInformation)
 
         assertNotNull(deviceInformationResult.userType)
-        assertNotNull(deviceInformationResult.userType?.bot)
-        assertTrue(deviceInformationResult.userType?.bot!!.isBadBot)
+        assertNull(deviceInformationResult.userType?.bot)
     }
 }

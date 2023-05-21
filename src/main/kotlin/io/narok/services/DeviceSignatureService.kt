@@ -2,16 +2,19 @@ package io.narok.services
 
 import io.narok.models.DeviceInformation
 import io.narok.models.DeviceSignature
+import io.narok.models.DeviceSignatureVersion
 import io.narok.services.Hash.toHex
 
 class DeviceSignatureService : IDeviceSignatureService {
+    override fun createSignature(deviceInformation: DeviceInformation): DeviceSignature {
+        return createSignatureV1(deviceInformation)
+    }
 
-    private val version = 1
-
-    override fun createSignature(deviceInformation: DeviceInformation): DeviceInformation {
-        if (deviceInformation.userAgent.isBlank() || deviceInformation.ipAddress.isBlank()) return deviceInformation
+    private fun createSignatureV1(deviceInformation: DeviceInformation): DeviceSignature {
+        if (deviceInformation.userAgent.isBlank() || deviceInformation.ipAddress.isBlank()) throw IllegalArgumentException(
+            "User-Agent and IpAddress cannot be blank."
+        )
         val md5 = Hash.md5("${deviceInformation.userAgent}${deviceInformation.ipAddress}")
-        val deviceSignature = DeviceSignature(md5.toHex(), version)
-        return deviceInformation.withSignature(deviceSignature)
+        return DeviceSignature(md5.toHex(), DeviceSignatureVersion.ONE)
     }
 }

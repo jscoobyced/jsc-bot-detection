@@ -3,7 +3,7 @@ package io.narok.services
 import io.narok.models.DeviceInformationBuilder
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNull
+import kotlin.test.assertFailsWith
 
 class DeviceSignatureServiceTest {
 
@@ -15,16 +15,19 @@ class DeviceSignatureServiceTest {
     fun `should not generate a DeviceInformation with signature if input is invalid`() {
         val deviceSignatureService: IDeviceSignatureService = DeviceSignatureService()
         var deviceInformation = DeviceInformationBuilder().build()
-        var result = deviceSignatureService.createSignature(deviceInformation)
-        assertNull(result.deviceSignature)
+        assertFailsWith<IllegalArgumentException> {
+            deviceSignatureService.createSignature(deviceInformation)
+        }
 
         deviceInformation = DeviceInformationBuilder().withIpAddress(ipAddress).build()
-        result = deviceSignatureService.createSignature(deviceInformation)
-        assertNull(result.deviceSignature)
+        assertFailsWith<IllegalArgumentException> {
+            deviceSignatureService.createSignature(deviceInformation)
+        }
 
         deviceInformation = DeviceInformationBuilder().withUserAgent(userAgent).build()
-        result = deviceSignatureService.createSignature(deviceInformation)
-        assertNull(result.deviceSignature)
+        assertFailsWith<IllegalArgumentException> {
+            deviceSignatureService.createSignature(deviceInformation)
+        }
     }
 
     @Test
@@ -33,6 +36,6 @@ class DeviceSignatureServiceTest {
         val deviceInformation = DeviceInformationBuilder().withUserAgent(userAgent).withIpAddress(ipAddress).build()
         val result = deviceSignatureService.createSignature(deviceInformation)
 
-        assertEquals(expected, result.deviceSignature?.signature)
+        assertEquals(expected, result.signature)
     }
 }
