@@ -2,8 +2,12 @@ version: '3.8'
 
 services:
   api-dev:
-    image: gradle:8-alpine
+    build:
+      context: .
+      dockerfile: etc/docker/development/Dockerfile
     user: 1000:1000
+    depends_on:
+      - rabbitmq
     volumes:
       - type: bind
         source: ${PWD}
@@ -17,12 +21,25 @@ services:
   api:
     build:
       context: .
-      dockerfile: etc/docker/Dockerfile
+      dockerfile: etc/docker/production/Dockerfile
     ports:
       - "8010:8010"
     env_file:
       - .env
     networks:
+      - jscbot
+
+  rabbitmq:
+    image: rabbitmq:3.12.0-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - "127.0.0.1:5673:5672"
+      - "127.0.0.1:15673:15672"
+    volumes:
+      - ${PWD}/rabbitmq/data/:/var/lib/rabbitmq/
+      - ${PWD}/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      - jscbot-dev
       - jscbot
 
 networks:

@@ -6,9 +6,6 @@ import fiftyone.pipeline.core.flowelements.Pipeline
 import fiftyone.pipeline.util.FileFinder
 import io.narok.models.DeviceInformation
 import io.narok.models.DeviceType
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.singleton
 
 class FiftyOneDegreesRepo : IFiftyOneDegreesRepo {
 
@@ -24,8 +21,4 @@ class FiftyOneDegreesRepo : IFiftyOneDegreesRepo {
         val device: DeviceData = flowData[DeviceData::class.java]
         return if (device.isMobile.hasValue() && device.isMobile.value) DeviceType.MOBILE else DeviceType.DESKTOP
     }
-}
-
-val fiftyOneDegreesDIModule = DI.Module("deviceDetectionModule") {
-    bind<IFiftyOneDegreesRepo> { singleton { FiftyOneDegreesRepo() } }
 }

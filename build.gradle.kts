@@ -3,7 +3,8 @@ val kotlinVersion: String by project
 val logbackVersion: String by project
 val sentryVersion: String by project
 val kodeinVersion: String by project
-val FiftyDegreesVersion: String by project
+val fiftyDegreesVersion: String by project
+val rabbitMqVersion: String by project
 
 plugins {
     kotlin("jvm") version "1.8.20"
@@ -30,14 +31,15 @@ dependencies {
     implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-auth:$ktorVersion")
     implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
     implementation("io.ktor:ktor-server-cors-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-compression-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("io.sentry:sentry:$sentryVersion")
     implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:$kodeinVersion")
-    implementation("com.51degrees:device-detection:$FiftyDegreesVersion")
+    implementation("com.51degrees:device-detection:$fiftyDegreesVersion")
+    implementation("com.rabbitmq:amqp-client:$rabbitMqVersion")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktorVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
     testImplementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")

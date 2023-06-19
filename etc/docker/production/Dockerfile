@@ -9,6 +9,8 @@ RUN gradle --no-daemon buildFatJar
 
 FROM openjdk:17-alpine
 
+RUN apk install libatomic
+
 RUN mkdir /app
 COPY --from=build /home/gradle/src/build/libs/jsc-bot-detection-all.jar /app/
 

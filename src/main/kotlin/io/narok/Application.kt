@@ -8,7 +8,7 @@ fun main(args: Array<String>): Unit = EngineMain.main(args)
 
 @Suppress("Unused")
 fun Application.module() {
-    configureDI()
+    configureDI(environment)
     configureSentry()
     configureSerialization()
     configureHTTP()
