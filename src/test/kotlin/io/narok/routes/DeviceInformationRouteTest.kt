@@ -7,7 +7,11 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.testing.*
 import io.narok.models.*
+import io.narok.plugins.mainDI
+import io.narok.plugins.queueRepoModule
 import io.narok.withToken
+import org.kodein.di.DI
+import org.kodein.di.diContext
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -15,6 +19,7 @@ import kotlin.test.assertNotNull
 class DeviceInformationRouteTest {
     @Test
     fun `Post a DeviceInformation`() = testApplication {
+
         val httpClient = createClient {
             install(ContentNegotiation) {
                 json()
@@ -109,6 +114,7 @@ class DeviceInformationRouteTest {
             assertEquals(HttpStatusCode.InternalServerError, response.status)
         }
     }
+
     @Test
     fun `Post an invalid DeviceInformation with malformed URL`() = testApplication {
         val httpClient = createClient {

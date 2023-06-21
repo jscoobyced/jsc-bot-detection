@@ -8,5 +8,5 @@ setup:
 stop:
 	docker-compose down
 
-dev:
+services:
 	docker-compose up api-dev rabbitmq -d

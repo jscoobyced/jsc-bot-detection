@@ -22,8 +22,7 @@ fun queueRepoDIModule(rabbitMqHost: String): DI.Module {
     }
 }
 
-fun mainDI(environment: ApplicationEnvironment): DI {
-    val rabbitMqHost = environment.config.property("rabbitmq.host").getString()
+fun mainDI(rabbitMqHost: String = ""): DI {
     return DI {
         bind<IDeviceInformationService> { singleton { DeviceInformationService(di) } }
         import(fiftyOneDegreesDIModule)
@@ -32,8 +31,9 @@ fun mainDI(environment: ApplicationEnvironment): DI {
 }
 
 fun Application.configureDI(environment: ApplicationEnvironment) {
+    val rabbitMqHost = environment.config.property("rabbitmq.host").getString()
 
     di {
-        extend(mainDI(environment))
+        extend(mainDI(rabbitMqHost))
     }
 }

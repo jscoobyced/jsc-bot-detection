@@ -35,6 +35,9 @@ fun Application.loginRouting() {
             } catch (exception: BadRequestException) {
                 Sentry.captureException(exception)
                 throw exception
+            } catch (exception: CannotTransformContentToTypeException) {
+                Sentry.captureException(exception)
+                throw BadRequestException(exception.message.toString(), exception)
             } finally {
                 transaction.finish()
             }
