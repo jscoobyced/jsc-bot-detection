@@ -4,6 +4,7 @@ import io.narok.models.DeviceInformation
 import io.narok.models.DeviceInformationRequest
 import io.narok.models.DeviceSignature
 import io.narok.models.DeviceType
+import io.narok.repo.IDeviceTypeRepo
 import io.narok.repo.IQueueRepo
 import io.sentry.Sentry
 import kotlinx.coroutines.CoroutineDispatcher
@@ -16,8 +17,10 @@ import org.kodein.di.instance
 class DeviceInformationService(
     override val di: DI, private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : IDeviceInformationService, DIAware {
+
     private val deviceSignatureService = DeviceSignatureService()
-    private val deviceTypeService = DeviceTypeService(di)
+    private val deviceTypeRepo: IDeviceTypeRepo by di.instance<IDeviceTypeRepo>()
+    private val deviceTypeService = DeviceTypeService(deviceTypeRepo)
     private val userTypeService = UserTypeService()
     private val queueRepo: IQueueRepo by di.instance<IQueueRepo>()
 
@@ -32,7 +35,14 @@ class DeviceInformationService(
 
         val processedDeviceInformation = deviceInformation.withDeviceType(deviceType).withSignature(deviceSignature)
             .withUserType(deviceInformationWithUserType.userType)
+        // try {
         queueRepo.pushDeviceInformationToQueue(processedDeviceInformation)
+        /*
+        } catch (exception: Exception) {
+                Sentry.captureException(exception)
+            }
+
+         */
         return processedDeviceInformation
     }
 

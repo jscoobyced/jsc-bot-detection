@@ -15,8 +15,8 @@ class DeviceInformationServiceTest {
     @Test
     fun `should generate the full DeviceInformation if data is valid`() = testApplication {
         val testDi = DI {
-            extend(mainDI)
-            import(queueRepoModule)
+            extend(mainDI())
+            import(queueRepoModule, allowOverride = true)
         }
 
         val deviceInformationRequest = defaultDeviceInformationRequest()

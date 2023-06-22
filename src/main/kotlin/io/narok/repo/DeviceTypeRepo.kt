@@ -7,7 +7,7 @@ import fiftyone.pipeline.util.FileFinder
 import io.narok.models.DeviceInformation
 import io.narok.models.DeviceType
 
-class FiftyOneDegreesRepo : IFiftyOneDegreesRepo {
+class DeviceTypeRepo : IDeviceTypeRepo {
 
     private val lazyPipeline: Pipeline by lazy {
         val dataFile: String = FileFinder.getFilePath("51Degrees-LiteV4.1.hash").absolutePath

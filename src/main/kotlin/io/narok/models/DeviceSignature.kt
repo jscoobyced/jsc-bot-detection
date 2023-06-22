@@ -8,4 +8,4 @@ enum class DeviceSignatureVersion {
 }
 
 @Serializable
-data class DeviceSignature(val signature: String, val version: DeviceSignatureVersion): java.io.Serializable
+data class DeviceSignature(val signature: String, val version: DeviceSignatureVersion) : java.io.Serializable

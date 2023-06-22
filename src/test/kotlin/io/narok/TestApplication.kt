@@ -9,9 +9,10 @@ fun Application.testModule() {
     AppLogger.logger().info("Starting test application.")
 
     di {
-        extend(mainDI)
-        import(queueRepoModule)
+        extend(mainDI())
+        import(queueRepoModule, allowOverride = true)
     }
+
     configureSentry()
     configureSerialization()
     configureHTTP()

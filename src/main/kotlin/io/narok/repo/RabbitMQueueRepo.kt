@@ -15,6 +15,11 @@ class RabbitMQueueRepo(private val rabbitMqHost: String) : IQueueRepo {
         factory
     }
 
+    init {
+        AppLogger.logger().info("Creating a RabbitMQueueRepo")
+    }
+
+
     override fun pushDeviceInformationToQueue(deviceInformation: DeviceInformation) {
         factory.newConnection().use { connection ->
             connection.createChannel().use { channel ->

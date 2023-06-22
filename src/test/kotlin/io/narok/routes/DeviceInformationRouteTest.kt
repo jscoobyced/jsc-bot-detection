@@ -7,11 +7,7 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.testing.*
 import io.narok.models.*
-import io.narok.plugins.mainDI
-import io.narok.plugins.queueRepoModule
 import io.narok.withToken
-import org.kodein.di.DI
-import org.kodein.di.diContext
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -73,7 +69,10 @@ class DeviceInformationRouteTest {
             }
             assertEquals(HttpStatusCode.InternalServerError, response.status)
             val errorResponse = response.body<ErrorResponse>()
-            assertEquals("User-Agent nor IpAddress cannot be blank.", errorResponse.message)
+            assertEquals(
+                "java.lang.IllegalArgumentException: User-Agent nor IpAddress cannot be blank.",
+                errorResponse.message
+            )
         }
     }
 
@@ -93,7 +92,10 @@ class DeviceInformationRouteTest {
             }
             assertEquals(HttpStatusCode.InternalServerError, response.status)
             val errorResponse = response.body<ErrorResponse>()
-            assertEquals("User-Agent nor IpAddress cannot be blank.", errorResponse.message)
+            assertEquals(
+                "java.lang.IllegalArgumentException: User-Agent nor IpAddress cannot be blank.",
+                errorResponse.message
+            )
         }
     }
 
