@@ -19,7 +19,7 @@ data class DeviceInformation(
     val deviceSignature: DeviceSignature? = null,
     val deviceType: DeviceType = DeviceType.UNASSIGNED,
     val userType: UserType? = null
-) : IDeviceInformation {
+) : IDeviceInformation, java.io.Serializable {
 
     fun withSignature(deviceSignature: DeviceSignature?): DeviceInformation {
         return DeviceInformation(

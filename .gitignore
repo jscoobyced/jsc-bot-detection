@@ -15,6 +15,7 @@ build/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+.kotlin/
 
 ### Eclipse ###
 .apt_generated
@@ -45,3 +46,9 @@ out/
 
 ### 51Degrees Hash File
 src/main/resources/51Degrees-LiteV4.1.hash
+
+### RabbitMQ data and logs
+/rabbitmq
+
+### Log files
+*.log

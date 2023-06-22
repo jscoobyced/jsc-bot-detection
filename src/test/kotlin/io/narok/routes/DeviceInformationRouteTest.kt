@@ -15,6 +15,7 @@ import kotlin.test.assertNotNull
 class DeviceInformationRouteTest {
     @Test
     fun `Post a DeviceInformation`() = testApplication {
+
         val httpClient = createClient {
             install(ContentNegotiation) {
                 json()
@@ -68,7 +69,10 @@ class DeviceInformationRouteTest {
             }
             assertEquals(HttpStatusCode.InternalServerError, response.status)
             val errorResponse = response.body<ErrorResponse>()
-            assertEquals("User-Agent nor IpAddress cannot be blank.", errorResponse.message)
+            assertEquals(
+                "java.lang.IllegalArgumentException: User-Agent nor IpAddress cannot be blank.",
+                errorResponse.message
+            )
         }
     }
 
@@ -88,7 +92,10 @@ class DeviceInformationRouteTest {
             }
             assertEquals(HttpStatusCode.InternalServerError, response.status)
             val errorResponse = response.body<ErrorResponse>()
-            assertEquals("User-Agent nor IpAddress cannot be blank.", errorResponse.message)
+            assertEquals(
+                "java.lang.IllegalArgumentException: User-Agent nor IpAddress cannot be blank.",
+                errorResponse.message
+            )
         }
     }
 
@@ -109,6 +116,7 @@ class DeviceInformationRouteTest {
             assertEquals(HttpStatusCode.InternalServerError, response.status)
         }
     }
+
     @Test
     fun `Post an invalid DeviceInformation with malformed URL`() = testApplication {
         val httpClient = createClient {

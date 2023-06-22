@@ -4,6 +4,7 @@ import io.ktor.server.testing.*
 import io.narok.models.DeviceType
 import io.narok.models.defaultDeviceInformationRequest
 import io.narok.plugins.mainDI
+import io.narok.plugins.queueRepoModule
 import org.kodein.di.DI
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -14,7 +15,8 @@ class DeviceInformationServiceTest {
     @Test
     fun `should generate the full DeviceInformation if data is valid`() = testApplication {
         val testDi = DI {
-            extend(mainDI)
+            extend(mainDI())
+            import(queueRepoModule, allowOverride = true)
         }
 
         val deviceInformationRequest = defaultDeviceInformationRequest()
