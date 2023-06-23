@@ -10,8 +10,9 @@ import io.ktor.server.routing.*
 import io.narok.models.DeviceInformationRequest
 import io.narok.models.ErrorResponse
 import io.narok.plugins.RoutingConfig
-import io.narok.services.DeviceInformationService
+import io.narok.services.IDeviceInformationService
 import io.sentry.Sentry
+import org.kodein.di.instance
 import org.kodein.di.ktor.closestDI
 
 object DeviceInformationRouteConfig {
@@ -26,16 +27,13 @@ fun Application.deviceInformationRouting() {
                 val transaction = Sentry.startTransaction(DeviceInformationRouteConfig.path, "post")
                 try {
                     val deviceInformationRequest = call.receive<DeviceInformationRequest>()
-                    val deviceInformationService = DeviceInformationService(call.closestDI())
+                    val deviceInformationService by call.closestDI().instance<IDeviceInformationService>()
                     val deviceInformation = deviceInformationService.getDeviceInformation(deviceInformationRequest)
                     call.respond(deviceInformation)
                 } catch (exception: CannotTransformContentToTypeException) {
                     Sentry.captureException(exception)
                     call.respond(HttpStatusCode.InternalServerError, ErrorResponse(exception.toString()))
                 } catch (exception: NullPointerException) {
-                    Sentry.captureException(exception)
-                    call.respond(HttpStatusCode.InternalServerError, ErrorResponse(exception.toString()))
-                } catch (exception: BadRequestException) {
                     Sentry.captureException(exception)
                     call.respond(HttpStatusCode.InternalServerError, ErrorResponse(exception.toString()))
                 } catch (exception: IllegalArgumentException) {

@@ -28,7 +28,9 @@ jobs:
         run: wget "$FIFTY_ONE_DEGREES_HASH_FILE_SRC" -O "$FIFTY_ONE_DEGREES_HASH_FILE_DEST"
 
       - name: Run Tests
-        run: ./gradlew koverXmlReport
+        run: |
+          which docker
+          ./gradlew koverXmlReport
 
       - name: Run Codecov
         uses: codecov/codecov-action@v3
