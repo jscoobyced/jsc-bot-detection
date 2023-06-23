@@ -21,7 +21,7 @@ class DeviceInformationService(
     private val deviceSignatureService = DeviceSignatureService()
     private val deviceTypeRepo: IDeviceTypeRepo by di.instance<IDeviceTypeRepo>()
     private val deviceTypeService = DeviceTypeService(deviceTypeRepo)
-    private val userTypeService = UserTypeService()
+    private val userTypeService: IUserTypeService by di.instance<IUserTypeService>()
     private val queueRepo: IQueueRepo by di.instance<IQueueRepo>()
 
     override suspend fun getDeviceInformation(deviceInformationRequest: DeviceInformationRequest): DeviceInformation {
@@ -35,14 +35,12 @@ class DeviceInformationService(
 
         val processedDeviceInformation = deviceInformation.withDeviceType(deviceType).withSignature(deviceSignature)
             .withUserType(deviceInformationWithUserType.userType)
-        // try {
-        queueRepo.pushDeviceInformationToQueue(processedDeviceInformation)
-        /*
+        try {
+            queueRepo.pushDeviceInformationToQueue(processedDeviceInformation)
         } catch (exception: Exception) {
-                Sentry.captureException(exception)
-            }
+            Sentry.captureException(exception)
+        }
 
-         */
         return processedDeviceInformation
     }
 

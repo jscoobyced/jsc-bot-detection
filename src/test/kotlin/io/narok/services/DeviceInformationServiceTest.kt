@@ -2,13 +2,13 @@ package io.narok.services
 
 import io.ktor.server.testing.*
 import io.narok.models.DeviceType
-import io.narok.models.defaultDeviceInformationRequest
+import io.narok.models.badBotDeviceInformationRequest
+import io.narok.models.defaultDesktopDeviceInformationRequest
+import io.narok.models.defaultMobileDeviceInformationRequest
 import io.narok.plugins.mainDI
 import io.narok.plugins.queueRepoModule
 import org.kodein.di.DI
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
+import kotlin.test.*
 
 class DeviceInformationServiceTest {
 
@@ -19,7 +19,7 @@ class DeviceInformationServiceTest {
             import(queueRepoModule, allowOverride = true)
         }
 
-        val deviceInformationRequest = defaultDeviceInformationRequest()
+        val deviceInformationRequest = defaultDesktopDeviceInformationRequest()
 
         val deviceInformationService = DeviceInformationService(testDi)
         val deviceInformation = deviceInformationService.getDeviceInformation(deviceInformationRequest)
@@ -29,5 +29,32 @@ class DeviceInformationServiceTest {
         assertNotNull(deviceInformation.deviceSignature)
         assertEquals(expectedSignature, deviceInformation.deviceSignature?.signature)
         assertEquals(DeviceType.DESKTOP, deviceInformation.deviceType)
+    }
+
+    @Test
+    fun `should identify a Mobile device`() = testApplication {
+        val testDi = DI {
+            extend(mainDI())
+            import(queueRepoModule, allowOverride = true)
+        }
+
+        val deviceInformationRequest = defaultMobileDeviceInformationRequest()
+        val deviceInformationService = DeviceInformationService(testDi)
+        val deviceInformation = deviceInformationService.getDeviceInformation(deviceInformationRequest)
+        assertEquals(DeviceType.MOBILE, deviceInformation.deviceType)
+    }
+
+    @Test
+    fun `should identify a Bot`() = testApplication {
+        val testDi = DI {
+            extend(mainDI())
+            import(queueRepoModule, allowOverride = true)
+        }
+
+        val deviceInformationRequest = badBotDeviceInformationRequest()
+        val deviceInformationService = DeviceInformationService(testDi)
+        val deviceInformation = deviceInformationService.getDeviceInformation(deviceInformationRequest)
+        assertTrue(deviceInformation.userType?.bot?.isBadBot!!)
+        assertFalse(deviceInformation.userType?.bot?.isKnownBot!!)
     }
 }

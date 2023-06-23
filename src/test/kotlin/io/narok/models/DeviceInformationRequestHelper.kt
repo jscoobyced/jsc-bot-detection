@@ -1,7 +1,15 @@
 package io.narok.models
 
-fun defaultDeviceInformationRequest(): DeviceInformationRequest {
+fun defaultDesktopDeviceInformationRequest(): DeviceInformationRequest {
     return DeviceInformationRequestBuilder("http://localhost", googleChromeLinuxUserAgent(), "192.168.1.1").build()
+}
+
+fun defaultMobileDeviceInformationRequest(): DeviceInformationRequest {
+    return DeviceInformationRequestBuilder("http://localhost", mobileChromeLinuxUserAgent(), "192.168.1.1").build()
+}
+
+fun badBotDeviceInformationRequest(): DeviceInformationRequest {
+    return DeviceInformationRequestBuilder("http://localhost", botUserAgent(), "192.168.1.1").build()
 }
 
 fun noIpAddressDeviceInformationRequest(): DeviceInformationRequest {

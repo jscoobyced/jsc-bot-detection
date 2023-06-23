@@ -32,9 +32,6 @@ fun Application.loginRouting() {
                     .withExpiresAt(Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * expiryInDays))
                     .sign(Algorithm.HMAC256(secret))
                 call.respond(hashMapOf("token" to token))
-            } catch (exception: BadRequestException) {
-                Sentry.captureException(exception)
-                throw exception
             } catch (exception: CannotTransformContentToTypeException) {
                 Sentry.captureException(exception)
                 throw BadRequestException(exception.message.toString(), exception)

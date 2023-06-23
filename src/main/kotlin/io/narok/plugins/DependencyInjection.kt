@@ -6,6 +6,8 @@ import io.narok.repo.IDeviceTypeRepo
 import io.narok.repo.IQueueRepo
 import io.narok.repo.RabbitMQueueRepo
 import io.narok.services.AppLogger
+import io.narok.services.IUserTypeService
+import io.narok.services.UserTypeService
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.ktor.di
@@ -15,17 +17,18 @@ val fiftyOneDegreesDIModule = DI.Module("fiftyOneDegreesDIModule") {
     bind<IDeviceTypeRepo> { singleton { DeviceTypeRepo() } }
 }
 
-fun queueRepoDIModule(rabbitMqHost: String): DI.Module {
-    return DI.Module("queueRepoDIModule") {
-        AppLogger.logger().info("Binding RabbitMQueueRepo to IQueueRepo")
+fun overrideableModules(rabbitMqHost: String): DI.Module {
+    return DI.Module("overrideableModules") {
         bind<IQueueRepo> { singleton { RabbitMQueueRepo(rabbitMqHost) } }
+        bind<IUserTypeService> { singleton { UserTypeService() } }
     }
 }
 
 fun mainDI(rabbitMqHost: String = ""): DI {
+    AppLogger.logger().info("Binding main dependencies.")
     return DI {
-        import(fiftyOneDegreesDIModule)
-        import(queueRepoDIModule(rabbitMqHost), allowOverride = true)
+        import(fiftyOneDegreesDIModule, allowOverride = true)
+        import(overrideableModules(rabbitMqHost), allowOverride = true)
     }
 }
 

@@ -24,7 +24,7 @@ class DeviceInformationRouteTest {
 
         withToken(httpClient) { token ->
 
-            val deviceInformationRequest = defaultDeviceInformationRequest()
+            val deviceInformationRequest = defaultDesktopDeviceInformationRequest()
             val response = httpClient.post(DeviceInformationRouteConfig.path) {
                 contentType(ContentType.Application.Json)
                 bearerAuth(token)

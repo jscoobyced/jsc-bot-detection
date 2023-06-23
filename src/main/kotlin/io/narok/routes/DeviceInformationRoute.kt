@@ -13,7 +13,6 @@ import io.narok.plugins.RoutingConfig
 import io.narok.services.DeviceInformationService
 import io.sentry.Sentry
 import org.kodein.di.ktor.closestDI
-import java.net.UnknownHostException
 
 object DeviceInformationRouteConfig {
     private const val route: String = "deviceInformation"
@@ -40,9 +39,6 @@ fun Application.deviceInformationRouting() {
                     Sentry.captureException(exception)
                     call.respond(HttpStatusCode.InternalServerError, ErrorResponse(exception.toString()))
                 } catch (exception: IllegalArgumentException) {
-                    Sentry.captureException(exception)
-                    call.respond(HttpStatusCode.InternalServerError, ErrorResponse(exception.toString()))
-                } catch (exception: UnknownHostException) {
                     Sentry.captureException(exception)
                     call.respond(HttpStatusCode.InternalServerError, ErrorResponse(exception.toString()))
                 } finally {

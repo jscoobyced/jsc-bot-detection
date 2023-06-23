@@ -13,7 +13,7 @@ class DeviceInformationBuilder {
     private val sessionId = ""
     private val deviceSignature: DeviceSignature? = null
     private val deviceType: DeviceType = DeviceType.UNASSIGNED
-    private val userType: UserType? = null
+    private var userType: UserType? = null
 
     fun withUserAgent(userAgent: String): DeviceInformationBuilder {
         this.userAgent = userAgent
