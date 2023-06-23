@@ -3,7 +3,6 @@ package io.narok.routes
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
-import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -30,13 +29,7 @@ fun Application.deviceInformationRouting() {
                     val deviceInformationService by call.closestDI().instance<IDeviceInformationService>()
                     val deviceInformation = deviceInformationService.getDeviceInformation(deviceInformationRequest)
                     call.respond(deviceInformation)
-                } catch (exception: CannotTransformContentToTypeException) {
-                    Sentry.captureException(exception)
-                    call.respond(HttpStatusCode.InternalServerError, ErrorResponse(exception.toString()))
-                } catch (exception: NullPointerException) {
-                    Sentry.captureException(exception)
-                    call.respond(HttpStatusCode.InternalServerError, ErrorResponse(exception.toString()))
-                } catch (exception: IllegalArgumentException) {
+                } catch (exception: Exception) {
                     Sentry.captureException(exception)
                     call.respond(HttpStatusCode.InternalServerError, ErrorResponse(exception.toString()))
                 } finally {
