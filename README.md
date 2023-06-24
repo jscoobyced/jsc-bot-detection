@@ -31,23 +31,27 @@ If you have custom organization and project name, you can override them in the [
 
 ## Running the application
 
-By default, whichever way you are going to execute the application, it will run in development mode. For production mode, see the below section. 
+Because of the other containers dependencies, we need to run using `docker-compose` command. There is a `Makefile` that can help simplify the commands to run.
 
-### Run in IntelliJ
-This project uses Kotlin, and was created in IntelliJ Community edition. You should be able to clone this repository then open the project in IntelliJ.
+### Setup
 
-Browse in the project to find the `Application.kt` class, right click and "Run". The service will start on http://0.0.0.0:8010
-
-Alternatively, you can do a `./gradlew run` from the root of th project (or via IntelliJ interface).
-
-### Docker-compose
-
-You can also run via docker-compose.
-
-Use IntelliJ `Services` panel to run the `api-dev` service. Alternatively run the command in a terminal:
-```shell
-docker-compose up -d api-dev
+Before being able to run the application, we need a dependency from 51 Degrees that provide device type detection. It identifies if a request is from a mobile or desktop.
+This setup step also build the dependencies.
+The very first time you checkout this repo, run this command:
 ```
+make setup
+```
+
+### Runtime
+
+Once setup is complete, you can run the application with
+```
+make services
+```
+
+### Debugging
+
+Coming soon!
 
 # Production mode
 To run in production, build the image and provide a `.env` file or the fields in it as environment variable to your runtime.
